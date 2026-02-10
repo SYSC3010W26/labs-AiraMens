@@ -1,0 +1,9 @@
+*.jpg
+
+*.png
+
+*.h264
+*.mp4
+
+__pycache__/
+*.pyc

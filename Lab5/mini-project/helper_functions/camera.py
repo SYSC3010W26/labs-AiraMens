@@ -1,15 +1,34 @@
+from picamera2 import Picamera2
+import time
+
 # returns camera instance
 def get_camera():
+    camera = Picamera2()
+    camera.configure(camera.create_still_configuration())
+    camera.start()
+    return camera
 
 # Takes in camera instance and preview time
 # displays camera preview for the indicated amount of time
 def camera_preview(camera, preveiw_time):
+    camera.start_preview()
+    time.sleep(preview_time)
+    camera.stop_preview
 
 # Takes in camera instance, output image location, countdown time and preview Boolean
 # If preview is true, preview is started
 # The code waits the indicated countdown time before the image is taken and stored in the indicated location
 # the preview is stopped if it was started
 def capture_image(camera,image_out_location, countdown_time = 0, preview = False ):
+    if preview:
+        camera.start_preview()
+        
+    time.sleep(countdown_time)
+    
+    camera.capture_file(image_out_location)
+    
+    if preview:
+        camera.stop_preview()
 
 # Takes in camera instance, output video location, video length, countdown time and preview Boolean
 # If preview is true, preview is started
@@ -17,3 +36,13 @@ def capture_image(camera,image_out_location, countdown_time = 0, preview = False
 # and stored in the indicated location
 # the preview is stopped if it was started
 def capture_video(camera,video_out_location, video_length, countdown_time = 0, preview = False):
+    if preview:
+        camera.start_preview()
+
+    time.sleep(countdown_time)
+
+    camera.start_and_record_video(
+        video_out_location, duration=video_length)
+
+    if preview:
+        camera.stop_preview()
